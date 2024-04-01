@@ -1,18 +1,25 @@
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import Options from '@pages/options/Options';
-import '@pages/options/index.css';
-import refreshOnUpdate from 'virtual:reload-on-update-in-view';
+import "@pages/options/index.css";
 
-refreshOnUpdate('pages/options');
+import { ThemeProvider } from "antd-style";
+import { createRoot } from "react-dom/client";
+import refreshOnUpdate from "virtual:reload-on-update-in-view";
 
-function init() {
-  const appContainer = document.querySelector('#app-container');
-  if (!appContainer) {
-    throw new Error('Can not find #app-container');
-  }
-  const root = createRoot(appContainer);
-  root.render(<Options />);
-}
+import Options from "@pages/options/Options";
 
-init();
+refreshOnUpdate("pages/options");
+
+const root = createRoot(document.getElementById("root"));
+root.render(
+  <ThemeProvider
+    themeMode={"auto"}
+    theme={{
+      token: {
+        colorPrimary: "#722ed1",
+        colorInfo: "#722ed1",
+        fontSize: 16,
+        wireframe: false
+      }
+    }}>
+    <Options />
+  </ThemeProvider>
+);
