@@ -165,6 +165,15 @@ async function create_page_in_db(img_url: string, mapping: Record<string, string
             url: remote_url
           }
         }
+      },
+      {
+        object: "block",
+        type: "code",
+        code: {
+          language: "json",
+          caption: [{ type: "text", text: { content: "Metadata" } }],
+          rich_text: [{ type: "text", text: { content: JSON.stringify(d) } }]
+        }
       }
     ]
   });
