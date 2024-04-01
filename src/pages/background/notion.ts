@@ -34,13 +34,12 @@ init().then(() => {
     parse_data(msg.url)
       .then(res => {
         console.log(res);
-        create_page_in_db(msg.url, default_mapping_database);
-        resp({ status: true });
+        create_page_in_db(msg.url, default_mapping_database).then();
       })
-      .catch(() => {
-        resp({ status: false });
+      .catch(e => {
+        console.log(e);
       });
-    return true;
+    resp({ status: true });
   });
   console.log("Notion init.");
 });
@@ -72,6 +71,7 @@ function chain(f: NaiImgData, r: string[]) {
   for (const j of r) {
     f = f[j];
   }
+  console.log("+++chain+++");
   return f;
 }
 
@@ -86,6 +86,10 @@ async function generate_prop(d: NaiImgData, mapping: Record<string, string[]>) {
       let o;
       switch (u.type) {
         case "title":
+          o = {
+            type: "title",
+            title: [{ type: "text", text: { content: v } }]
+          };
           break;
         case "number": {
           o = {
@@ -124,13 +128,15 @@ async function create_page_in_db(img_url: string, mapping: Record<string, string
   const s = await fetch(img_url);
   const b = await s.blob();
   const r = await uploadByBuffer(b);
+  const props = await generate_prop(d, mapping);
+  console.log(props);
   const remote_url = r.link;
   const notion = new Client({ auth: app_key });
   const response = await notion.pages.create({
     parent: {
       database_id: db_id
     },
-    properties: await generate_prop(d, mapping),
+    properties: props,
     children: [
       {
         object: "block",
