@@ -19,10 +19,15 @@ const InputInfo = ({ set_code }: props) => {
     console.log("Success:", values);
     chrome.storage.local.set({ app_key: values.app_key, db_id: values.db_id }).then(() => {
       console.log("Set info successfully.");
-      get_db_scheme().then(res => {
-        set_code(JSON.stringify(res, null, 2));
-      });
-      alert("OK");
+      get_db_scheme()
+        .then(res => {
+          set_code(JSON.stringify(res, null, 2));
+          alert("OK");
+        })
+        .catch((e: Error) => {
+          console.error(e);
+          set_code(e.message);
+        });
     });
   };
 
