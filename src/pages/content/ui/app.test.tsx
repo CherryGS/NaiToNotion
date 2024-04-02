@@ -6,7 +6,7 @@ import { render, screen } from "@testing-library/react";
 describe("appTest", () => {
   test("render text", () => {
     // given
-    const text = "";
+    const text = "Test";
 
     // when
     render(<App />);
