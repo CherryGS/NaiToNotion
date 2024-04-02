@@ -1,9 +1,10 @@
-import exifr from 'exifr';
+import exifr from "exifr";
 
-import { Client } from '@notionhq/client';
+import { Client } from "@notionhq/client";
+import { CreatePageParameters, GetDatabaseResponse } from "@notionhq/client/build/src/api-endpoints";
 
-import { ImgUrl, MessageType } from '../message';
-import { uploadByBuffer } from './telegraph';
+import { ImgUrl, MessageType } from "../message";
+import { uploadByBuffer } from "./telegraph";
 
 let app_key;
 let db_id;
@@ -65,18 +66,13 @@ export async function get_db_scheme() {
 }
 
 function chain(f: NaiImgData, r: string[]) {
-  console.log("---chain---");
-  console.log(f);
-  console.log(r);
   for (const j of r) {
     f = f[j];
   }
-  console.log("+++chain+++");
   return f;
 }
 
-async function generate_prop(d: NaiImgData, mapping: Record<string, string[]>) {
-  const r = await get_db_scheme();
+async function generate_prop(d: NaiImgData, mapping: Record<string, string[]>, r: GetDatabaseResponse) {
   const p = {};
   for (const i in r.properties) {
     const u = r.properties[i];
@@ -99,12 +95,26 @@ async function generate_prop(d: NaiImgData, mapping: Record<string, string[]>) {
           break;
         }
         case "select": {
-          o = {
-            type: "select",
-            select: {
-              name: v.toString()
-            }
-          };
+          const n = v.toString();
+          const r = u.select.options.filter(u => {
+            return u.name == n;
+          })[0];
+          if (r) {
+            o = {
+              type: "select",
+              select: {
+                id: r.id,
+                name: n
+              }
+            };
+          } else {
+            o = {
+              type: "select",
+              select: {
+                name: n
+              }
+            };
+          }
           break;
         }
         case "multi_select": {
@@ -128,11 +138,20 @@ async function create_page_in_db(img_url: string, mapping: Record<string, string
   const s = await fetch(img_url);
   const b = await s.blob();
   const r = await uploadByBuffer(b);
-  const props = await generate_prop(d, mapping);
+  const p = await get_db_scheme();
+  const props = await generate_prop(d, mapping, p);
   console.log(props);
+  console.log(p);
   const remote_url = r.link;
   const notion = new Client({ auth: app_key });
-  const response = await notion.pages.create({
+
+  const prompt = d._comment.prompt;
+  const uc = d._comment.uc;
+  d.Comment = undefined;
+  d._comment._prompt = undefined;
+  d._comment.prompt = undefined;
+  d._comment.uc = undefined;
+  const page: CreatePageParameters = {
     parent: {
       database_id: db_id
     },
@@ -144,7 +163,7 @@ async function create_page_in_db(img_url: string, mapping: Record<string, string
         code: {
           language: "plain text",
           caption: [{ type: "text", text: { content: "Prompts" } }],
-          rich_text: [{ type: "text", text: { content: d._comment.prompt } }]
+          rich_text: [{ type: "text", text: { content: prompt } }]
         }
       },
       {
@@ -153,7 +172,7 @@ async function create_page_in_db(img_url: string, mapping: Record<string, string
         code: {
           language: "plain text",
           caption: [{ type: "text", text: { content: "Uc" } }],
-          rich_text: [{ type: "text", text: { content: d._comment.uc } }]
+          rich_text: [{ type: "text", text: { content: uc } }]
         }
       },
       {
@@ -176,7 +195,9 @@ async function create_page_in_db(img_url: string, mapping: Record<string, string
         }
       }
     ]
-  });
+  };
+  console.log(page);
+  const response = await notion.pages.create(page);
   console.log(response);
 }
 
