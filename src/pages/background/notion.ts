@@ -1,9 +1,9 @@
-import exifr from "exifr";
+import exifr from 'exifr';
 
-import { Client } from "@notionhq/client";
+import { Client } from '@notionhq/client';
 
-import { ImgUrl, MessageType } from "../message";
-import { uploadByBuffer } from "./telegraph";
+import { ImgUrl, MessageType } from '../message';
+import { uploadByBuffer } from './telegraph';
 
 let app_key;
 let db_id;
@@ -102,7 +102,7 @@ async function generate_prop(d: NaiImgData, mapping: Record<string, string[]>) {
           o = {
             type: "select",
             select: {
-              name: v
+              name: v.toString()
             }
           };
           break;
