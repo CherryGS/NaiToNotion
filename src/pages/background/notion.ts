@@ -151,6 +151,7 @@ async function create_page_in_db(img_url: string, mapping: Record<string, string
   d._comment._prompt = undefined;
   d._comment.prompt = undefined;
   d._comment.uc = undefined;
+  d.Description = undefined;
   const page: CreatePageParameters = {
     parent: {
       database_id: db_id
@@ -191,7 +192,7 @@ async function create_page_in_db(img_url: string, mapping: Record<string, string
         code: {
           language: "json",
           caption: [{ type: "text", text: { content: "Metadata" } }],
-          rich_text: [{ type: "text", text: { content: JSON.stringify(d) } }]
+          rich_text: [{ type: "text", text: { content: JSON.stringify(d, null, 2) } }]
         }
       }
     ]
