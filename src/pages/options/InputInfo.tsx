@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/named
 import { Button, Form, FormProps, Input, Space } from "antd";
-import React from "react";
+import React, { useEffect } from "react";
 
 import { get_db_scheme } from "../background/notion";
 
@@ -15,6 +15,7 @@ interface props {
 
 const InputInfo = ({ set_code }: props) => {
   const [form] = Form.useForm();
+
   const onFinish: FormProps<FieldType>["onFinish"] = values => {
     console.log("Success:", values);
     chrome.storage.local.set({ app_key: values.app_key, db_id: values.db_id }).then(() => {
@@ -34,6 +35,7 @@ const InputInfo = ({ set_code }: props) => {
   const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = errorInfo => {
     console.log("Failed:", errorInfo);
   };
+
   const onReset = async () => {
     const v = await chrome.storage.local.get(["app_key", "db_id"]);
     form.setFieldValue("app_key", v["app_key"]);
@@ -41,6 +43,10 @@ const InputInfo = ({ set_code }: props) => {
     console.log("Reset form");
     console.log(v);
   };
+
+  useEffect(() => {
+    onReset().then();
+  }, []);
 
   return (
     <Form
@@ -60,7 +66,7 @@ const InputInfo = ({ set_code }: props) => {
       </Form.Item>
 
       <Form.Item<FieldType>
-        label="Notion Database Index"
+        label="DB Index"
         name="db_id"
         rules={[{ required: true, message: "Please input your notion database index!" }]}>
         <Input />

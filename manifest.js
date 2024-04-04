@@ -34,6 +34,7 @@ const manifest = {
   icons: {
     16: "icon-16.png",
     32: "icon-32.png",
+    48: "icon-48.png",
     64: "icon-64.png",
     128: "icon-128.png",
     256: "icon-256.png"
@@ -53,7 +54,7 @@ const manifest = {
   devtools_page: "src/pages/devtools/index.html",
   web_accessible_resources: [
     {
-      resources: ["assets/js/*.js", "assets/css/*.css", "icon-128.png", "icon-34.png"],
+      resources: ["assets/js/*.js", "assets/css/*.css", "icon-128.png", "icon-32.png"],
       matches: ["*://*/*"]
     }
   ],
