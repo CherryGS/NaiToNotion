@@ -4,8 +4,9 @@
 
 ## 效果概览
 
-![alt text](img/2.png)
-![alt text](img/3.png)
+![alt text](img/2.jpg)
+![alt text](img/3.jpg)
+![alt text](img/5.jpg)
 
 ## 请注意
 
@@ -55,14 +56,14 @@ internal 即可，应用名什么的随意，重要的是 key
 
 在 `https://novelai.net/image` 页面生成图片后，下方会出现一个 **N** 形状的按钮，按它
 
-![alt text](img/4.png)
+![alt text](img/4.jpg)
 
 注意被发送到 Notion 的图片是你屏幕中间显示的，所以可以通过右侧的历史记录发送之前生成的图片
 
 
 ## 数据库格式要求
 
-![schema](img/1.png)
+![schema](img/1.jpg)
 
 在这个时间(`2024-04-06 02:23:13`),会被自动赋值的有 4 个列名和对应上的列类型
 
