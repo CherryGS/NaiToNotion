@@ -19,7 +19,9 @@
 
 ### 安装插件
 
-zip 在 `dist-zip` 下
+自行编译(`pnpm i` 然后 `pnpm build`)
+
+在 release 下载
 
 ### 获取 Notion integration auth key
 
