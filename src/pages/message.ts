@@ -1,16 +1,13 @@
 export enum MessageType {
-  ImgUrl
+  ImgUrl,
 }
 
-interface BaseMessage {
-  type: MessageType;
-}
-
-export interface ImgUrl extends BaseMessage {
+export interface ImgUploadMsg {
   type: MessageType.ImgUrl;
   url: string;
 }
 
-export interface BaseResponse {
-  status: true | false;
+export interface ImgResponse<T> {
+  result: true | false;
+  rawMsg: T;
 }

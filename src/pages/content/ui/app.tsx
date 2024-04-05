@@ -1,13 +1,19 @@
-import { useEffect } from "react";
+import { Button } from "antd";
+import { useState } from "react";
 
-export default function App() {
-  useEffect(() => {
-    console.log("content view loaded");
-  }, []);
+import { FullscreenOutlined } from "@ant-design/icons";
 
+import type { ConfigProviderProps } from "antd";
+type SizeType = ConfigProviderProps["componentSize"];
+export const App = () => {
+  const [size, setSize] = useState<SizeType>("large");
   return (
-    <div className="" style={{ opacity: 0, height: 0, width: 0 }}>
-      Test
-    </div>
+    <Button
+      type="primary"
+      shape="circle"
+      size={size}
+      style={{ zIndex: `9999`, position: "absolute" }}
+      icon={<FullscreenOutlined />}
+    />
   );
-}
+};

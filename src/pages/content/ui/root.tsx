@@ -1,6 +1,10 @@
+import { theme } from "antd";
+import { ThemeProvider } from "antd-style";
 import { createRoot } from "react-dom/client";
-import App from "@pages/content/ui/app";
 import refreshOnUpdate from "virtual:reload-on-update-in-view";
+
+import { listen_element } from "../../utils/web";
+import { App } from "./app";
 import injectedStyle from "./ui.css?inline";
 
 refreshOnUpdate("pages/content");
@@ -8,6 +12,9 @@ refreshOnUpdate("pages/content");
 const root = document.createElement("div");
 root.id = "ntn-viewer";
 
+// listen_element("//a[@href='/stories']", (n) => {
+//   n.
+// })
 document.body.append(root);
 
 const rootIntoShadow = document.createElement("div");
@@ -28,4 +35,16 @@ shadowRoot.appendChild(styleElement);
  * Please refer to the PR link above and go back to the contentStyle.css implementation, or raise a PR if you have a better way to improve it.
  */
 
-createRoot(rootIntoShadow).render(<App />);
+createRoot(rootIntoShadow).render(
+  <ThemeProvider
+    theme={{
+      token: {
+        colorPrimary: "#722ed1",
+        colorInfo: "#722ed1",
+        fontSize: 16,
+      },
+      algorithm: theme.darkAlgorithm,
+    }}>
+    <App />
+  </ThemeProvider>
+);

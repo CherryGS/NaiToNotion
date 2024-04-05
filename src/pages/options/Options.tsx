@@ -6,17 +6,19 @@ import { useState } from "react";
 import { PageContainer, ProLayout } from "@ant-design/pro-components";
 import { Route } from "@ant-design/pro-layout/lib/typing";
 import icon from "@assets/ico/icon-32.png";
-import ReactJson from "@microlink/react-json-view";
+import JsonView from "@uiw/react-json-view";
+import { darkTheme } from "@uiw/react-json-view/dark";
 
+// import ReactJson from "@microlink/react-json-view";
 import InputInfo from "./InputInfo";
 
 const route: Route = {
   path: "/",
   routes: [
     {
-      path: "/"
-    }
-  ]
+      path: "/",
+    },
+  ],
 };
 
 export const OptionPage = () => {
@@ -32,11 +34,9 @@ export const OptionPage = () => {
         content={
           <>
             <InputInfo set_code={set_code} />
-            <ReactJson
-              src={JSON.parse(code)}
-              theme="pop"
-              iconStyle="circle"
-              style={{ opacity: 1, backgroundColor: `none`, fontFamily: `LXGW WenKai Mono` }}
+            <JsonView
+              value={JSON.parse(code)}
+              style={{ ...darkTheme, background: "none", fontFamily: `LXGW WenKai Mono` }}
             />
           </>
         }></PageContainer>

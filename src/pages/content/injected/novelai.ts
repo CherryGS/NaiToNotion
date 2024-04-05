@@ -1,4 +1,5 @@
-import { BaseResponse, ImgUrl, MessageType } from "../../message";
+import { ImgUploadMsg, MessageType } from "@pages/message";
+import { listen_element } from "@pages/utils/web";
 
 function get_now_img_src() {
   const imgs = document.getElementsByTagName("img");
@@ -11,34 +12,15 @@ function get_now_img_src() {
 const btn = document.createElement("button");
 btn.innerText = "N";
 btn.className = "inject-btn";
-// btn.className = "test-inject-btn";
 btn.addEventListener("click", async () => {
-  const msg: ImgUrl = {
+  const msg: ImgUploadMsg = {
     type: MessageType.ImgUrl,
-    url: get_now_img_src()
+    url: get_now_img_src(),
   };
-  const response: BaseResponse = await chrome.runtime.sendMessage(msg);
-  if (response.status == true) {
-    alert("Success.");
-  } else {
-    alert("Unknown error.");
-  }
+  await chrome.runtime.sendMessage(msg);
 });
 
-function inject(xpath: string) {
-  console.log("开始监听按钮面板...");
-
-  const observer = new MutationObserver(() => {
-    const panel = document.evaluate(xpath, document.body).iterateNext();
-
-    if (panel) {
-      panel.insertBefore(btn, panel.firstChild);
-      observer.disconnect();
-      console.log("按钮注入完成...");
-    }
-  });
-
-  observer.observe(document.body, { childList: true, subtree: true });
-}
 const panel = ".//span[contains(text(), 'Copy to Seed')]/ancestor::button[1]/..";
-inject(panel);
+listen_element(panel, n => {
+  n.insertBefore(btn, n.firstChild);
+});

@@ -2,50 +2,44 @@
 import { Button, Form, FormProps, Input, Space } from "antd";
 import React, { useEffect } from "react";
 
-import { get_db_scheme } from "../background/notion";
+import { get_db_scheme } from "@pages/background/notion/lib";
 
-type FieldType = {
-  app_key?: string;
-  db_id?: string;
-};
-
-interface props {
+type props = {
   set_code: CallableFunction;
-}
+};
+type keys = "app_key" | "db_id";
+type mapping = Record<keys, string>;
 
 const InputInfo = ({ set_code }: props) => {
   const [form] = Form.useForm();
 
-  const onFinish: FormProps<FieldType>["onFinish"] = values => {
-    console.log("Success:", values);
-    chrome.storage.local.set({ app_key: values.app_key, db_id: values.db_id }).then(() => {
-      console.log("Set info successfully.");
-      get_db_scheme()
-        .then(res => {
-          set_code(JSON.stringify(res, null, 2));
-          alert("OK");
-        })
-        .catch((e: Error) => {
-          console.error(e);
-          set_code(e.message);
-        });
+  const onFinish: FormProps["onFinish"] = (v: mapping) => {
+    const upd: Partial<ChromeLocalStorage> = {
+      app_key: v.app_key,
+      db_id: v.db_id,
+    };
+    chrome.storage.local.set(upd).then(() => {
+      get_db_scheme(upd.app_key, upd.db_id).then(res => {
+        set_code(JSON.stringify(res, null, 2));
+      });
     });
   };
 
-  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = errorInfo => {
+  const onFinishFailed: FormProps["onFinishFailed"] = errorInfo => {
     console.log("Failed:", errorInfo);
   };
 
-  const onReset = async () => {
-    const v = await chrome.storage.local.get(["app_key", "db_id"]);
-    form.setFieldValue("app_key", v["app_key"]);
-    form.setFieldValue("db_id", v["db_id"]);
-    console.log("Reset form");
-    console.log(v);
+  const onReset = () => {
+    chrome.storage.local.get().then((v: ChromeLocalStorage) => {
+      form.setFieldValue("app_key", v["app_key"]);
+      form.setFieldValue("db_id", v["db_id"]);
+      console.log(v);
+    });
   };
 
   useEffect(() => {
-    onReset().then();
+    onReset();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -58,14 +52,14 @@ const InputInfo = ({ set_code }: props) => {
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       autoComplete="off">
-      <Form.Item<FieldType>
+      <Form.Item
         label="App Key"
         name="app_key"
         rules={[{ required: true, message: "Please input your notion app key!" }]}>
         <Input.Password />
       </Form.Item>
 
-      <Form.Item<FieldType>
+      <Form.Item
         label="DB Index"
         name="db_id"
         rules={[{ required: true, message: "Please input your notion database index!" }]}>

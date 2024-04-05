@@ -1,6 +1,8 @@
-import reloadOnUpdate from "virtual:reload-on-update-in-background-script";
 import "webextension-polyfill";
-import "./notion";
+import "./notion/core";
+
+import reloadOnUpdate from "virtual:reload-on-update-in-background-script";
+
 reloadOnUpdate("pages/background");
 
 /**
