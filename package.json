@@ -89,5 +89,9 @@
       "eslint --fix"
     ]
   },
-  "packageManager": "pnpm@8.9.2"
+  "packageManager": "pnpm@8.9.2",
+  "keywords": [
+    "novelai",
+    "notion"
+  ]
 }
