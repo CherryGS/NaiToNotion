@@ -92,6 +92,8 @@ export async function generate_prop(d: NaiImgMetaData, b: NotionDbSchema, gen: N
 }
 export class ImgPage {
   input: string;
+  app_key: string;
+  db_id: string;
   gen: NotionPropGenType;
   metadata: NaiImgMetaData;
   schema: NotionDbSchema;
@@ -102,17 +104,20 @@ export class ImgPage {
     this.gen = gen;
   }
   async prepare(app_key: string, db_id: string) {
+    this.app_key = app_key;
+    this.db_id = db_id;
     this.metadata = await parse_metadata(this.input);
     this.schema = await get_db_scheme(app_key, db_id);
     this.props = await generate_prop(this.metadata, this.schema, this.gen);
+    return this;
   }
 
-  async upload(app_key: string, db_id: string) {
-    await this.prepare(app_key, db_id);
+  async upload() {
+    await this.prepare(this.app_key, this.db_id);
     const metadata: NaiImgMetaData = JSON.parse(JSON.stringify(this.metadata));
     const url = (await upload_by_buffer(await (await fetch(this.input)).blob())).link;
 
-    const notion = new Client({ auth: app_key });
+    const notion = new Client({ auth: this.app_key });
 
     const prompt = metadata._comment.prompt;
     const uc = metadata._comment.uc;
@@ -124,7 +129,7 @@ export class ImgPage {
     metadata.Description = undefined;
     const page: CreatePageParameters = {
       parent: {
-        database_id: db_id,
+        database_id: this.db_id,
       },
       properties: this.props,
       children: [
@@ -168,5 +173,6 @@ export class ImgPage {
       ],
     };
     this.response = await notion.pages.create(page);
+    return this;
   }
 }

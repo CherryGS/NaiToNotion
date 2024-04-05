@@ -59,10 +59,9 @@ const manifest = {
         "assets/css/*.css",
         "icon/*.png"],
       matches: ["*://*/*"]
-      // matches: ["https://**"]
     }
   ],
-  host_permissions: ["https://*.notion.com/"]
+  host_permissions: ["https://*.notion.com/*", "https://telegra.ph/*"]
 };
 
 export default manifest;

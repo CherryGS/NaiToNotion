@@ -1,10 +1,12 @@
 import { theme } from "antd";
 import { ThemeProvider } from "antd-style";
 import { createRoot } from "react-dom/client";
+import Draggable from "react-draggable";
 import refreshOnUpdate from "virtual:reload-on-update-in-view";
 
-import { listen_element } from "../../utils/web";
+// import { listen_element } from "@pages/utils/web";
 import { App } from "./app";
+import App1 from "./app1";
 import injectedStyle from "./ui.css?inline";
 
 refreshOnUpdate("pages/content");
@@ -36,15 +38,26 @@ shadowRoot.appendChild(styleElement);
  */
 
 createRoot(rootIntoShadow).render(
-  <ThemeProvider
-    theme={{
-      token: {
-        colorPrimary: "#722ed1",
-        colorInfo: "#722ed1",
-        fontSize: 16,
-      },
-      algorithm: theme.darkAlgorithm,
-    }}>
-    <App />
-  </ThemeProvider>
+  // <ThemeProvider
+  //   theme={{
+  //     token: {
+  //       colorPrimary: "#722ed1",
+  //       colorInfo: "#722ed1",
+  //       fontSize: 16,
+  //     },
+  //     algorithm: theme.darkAlgorithm,
+  //   }}>
+  //   <Draggable
+  //     axis="both"
+  //     handle=".drag-handle"
+  //     defaultPosition={{ x: 0, y: 0 }}
+  //     position={null}
+  //     grid={[1, 1]}
+  //     scale={1}>
+  //     <div>
+  //       <App />
+  //     </div>
+  //   </Draggable>
+  // </ThemeProvider>
+  <App1 />
 );

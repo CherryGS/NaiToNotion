@@ -1,9 +1,11 @@
-import { type PluginOption } from 'vite';
-import makeManifest from './plugins/make-manifest';
-import customDynamicImport from './plugins/custom-dynamic-import';
-import addHmr from './plugins/add-hmr';
-import watchRebuild from './plugins/watch-rebuild';
-import inlineVitePreloadScript from './plugins/inline-vite-preload-script';
+import type { PluginOption } from "vite";
+import { visualizer } from "rollup-plugin-visualizer";
+
+import addHmr from "./plugins/add-hmr";
+import customDynamicImport from "./plugins/custom-dynamic-import";
+import inlineVitePreloadScript from "./plugins/inline-vite-preload-script";
+import makeManifest from "./plugins/make-manifest";
+import watchRebuild from "./plugins/watch-rebuild";
 
 export const getPlugins = (isDev: boolean): PluginOption[] => [
   makeManifest({ getCacheInvalidationKey }),
@@ -13,6 +15,7 @@ export const getPlugins = (isDev: boolean): PluginOption[] => [
   isDev && watchRebuild({ afterWriteBundle: regenerateCacheInvalidationKey }),
   // For fix issue#177 (https://github.com/Jonghakseo/chrome-extension-boilerplate-react-vite/issues/177)
   inlineVitePreloadScript(),
+  visualizer(),
 ];
 
 const cacheInvalidationKeyRef = { current: generateKey() };

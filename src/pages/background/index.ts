@@ -3,6 +3,8 @@ import "./notion/core";
 
 import reloadOnUpdate from "virtual:reload-on-update-in-background-script";
 
+import { print_message } from "../utils/web";
+
 reloadOnUpdate("pages/background");
 
 /**
@@ -11,4 +13,4 @@ reloadOnUpdate("pages/background");
  */
 reloadOnUpdate("pages/content/style.scss");
 
-console.log("background loaded");
+print_message();

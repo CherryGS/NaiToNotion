@@ -15,22 +15,31 @@ const default_gen: NotionPropGenType = {
 };
 
 chrome.runtime.onMessage.addListener((msg: ImgUploadMsg, sender) => {
-  if (msg.type != MessageType.ImgUrl) {
+  if (msg.type != MessageType.ImgUploadingMsg) {
     return;
   }
+
   chrome.storage.local
     .get()
-    .then((k: ChromeLocalStorage) => {
-      const p = new ImgPage(msg.url, default_gen);
-      p.prepare(k.app_key, k.db_id)
-        .then(() => p.upload(k.app_key, k.db_id))
-        .then();
+    .then((k: ChromeLocalStorage) => new ImgPage(msg.url, default_gen).prepare(k.app_key, k.db_id))
+    .then(p => p.upload())
+    .then(() => {
+      const resp: ImgResponse<ImgUploadMsg> = {
+        result: true,
+        rawMsg: msg,
+      };
+      return chrome.tabs.sendMessage(sender.tab.id, resp);
     })
-    .catch(() => {
+    .then()
+    .catch((e: Error) => {
       const resp: ImgResponse<ImgUploadMsg> = {
         result: false,
         rawMsg: msg,
+        rawErr: e.message,
       };
-      chrome.tabs.sendMessage(sender.tab.id, resp).then();
+      return chrome.tabs.sendMessage(sender.tab.id, resp);
+    })
+    .catch(e => {
+      console.error(e);
     });
 });

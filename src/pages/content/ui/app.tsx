@@ -13,6 +13,7 @@ export const App = () => {
       shape="circle"
       size={size}
       style={{ zIndex: `9999`, position: "absolute" }}
+      className="drag-handle"
       icon={<FullscreenOutlined />}
     />
   );

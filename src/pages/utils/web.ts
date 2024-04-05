@@ -16,3 +16,13 @@ export function listen_element(xpath: string, callback: (n: Node) => void) {
 
   observer.observe(document.body, { childList: true, subtree: true });
 }
+
+export const print_message = () => {
+  chrome.runtime.onMessage.addListener((msg, sender) => {
+    console.log("--- Message ---");
+    console.log(msg);
+    console.log("--- Sender ----");
+    console.log(sender);
+    console.log("---------------");
+  });
+};
