@@ -11,7 +11,9 @@ const default_gen: NotionPropGenType = {
   Tags: {
     t: "multi_select",
     f: d => {
-      return d._comment._prompt.prompt.filter(t => t.startsWith("artist:") || multi_select_keys.has(t.toLowerCase()));
+      return d._comment._prompt.prompt
+        .map(u => u.replaceAll("{", "").replaceAll("}", ""))
+        .filter(t => t.startsWith("artist:") || multi_select_keys.has(t.toLowerCase()));
     },
   },
 };
