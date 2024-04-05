@@ -1,5 +1,6 @@
 import type { PluginOption } from "vite";
 import { visualizer } from "rollup-plugin-visualizer";
+import zipPack from "vite-plugin-zip-pack";
 
 import addHmr from "./plugins/add-hmr";
 import customDynamicImport from "./plugins/custom-dynamic-import";
@@ -16,6 +17,7 @@ export const getPlugins = (isDev: boolean): PluginOption[] => [
   // For fix issue#177 (https://github.com/Jonghakseo/chrome-extension-boilerplate-react-vite/issues/177)
   inlineVitePreloadScript(),
   visualizer(),
+  !isDev && zipPack(),
 ];
 
 const cacheInvalidationKeyRef = { current: generateKey() };

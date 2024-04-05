@@ -42,6 +42,7 @@
     "react-draggable": "^4.4.6",
     "react-json-view-preview": "^1.0.2",
     "react-router-dom": "^6.22.3",
+    "vite-plugin-zip-pack": "^1.2.2",
     "webextension-polyfill": "^0.10.0"
   },
   "devDependencies": {
