@@ -12,8 +12,16 @@ const default_gen: NotionPropGenType = {
     t: "multi_select",
     f: d => {
       return d._comment._prompt.prompt
-        .map(u => u.replaceAll("{", "").replaceAll("}", ""))
-        .filter(t => t.startsWith("artist:") || multi_select_keys.has(t.toLowerCase()));
+        .map(u => u.replaceAll(new RegExp(`[\\{\\}\\[\\]]`, "g"), ""))
+        .filter(t => multi_select_keys.has(t.toLowerCase()));
+    },
+  },
+  Artists: {
+    t: "multi_select",
+    f: d => {
+      return d._comment._prompt.prompt
+        .map(u => u.replaceAll(new RegExp(`[\\{\\}\\[\\]]`, "g"), ""))
+        .filter(t => t.startsWith("artist:"));
     },
   },
 };
@@ -41,6 +49,7 @@ chrome.runtime.onMessage.addListener((msg: ImgUploadMsg, sender) => {
         rawMsg: msg,
         rawErr: e.message,
       };
+      console.error(e);
       return chrome.tabs.sendMessage(sender.tab.id, resp);
     })
     .catch(e => {

@@ -62,11 +62,9 @@ export async function generate_prop(d: NaiImgMetaData, b: NotionDbSchema, gen: N
           break;
         }
         case "select": {
-          const r = u.select.options.filter(u => u.name == (val as string))[0];
           p[u.name] = {
             type: "select",
             select: {
-              id: r === undefined ? undefined : r.id,
               name: val as string,
             },
           };
@@ -75,10 +73,7 @@ export async function generate_prop(d: NaiImgMetaData, b: NotionDbSchema, gen: N
         case "multi_select": {
           p[u.name] = {
             type: "multi_select",
-            multi_select: (val as string[]).map(str => {
-              const r = u.multi_select.options.filter(u => u.name == str)[0];
-              return { id: r === undefined ? undefined : r.id, name: str };
-            }),
+            multi_select: (val as string[]).map(str => ({ name: str })),
           };
           break;
         }

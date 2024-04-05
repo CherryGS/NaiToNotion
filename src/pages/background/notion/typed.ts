@@ -15,10 +15,10 @@ export type NotionPropGenType = Record<
   propStr,
   | {
       t: "title" | "number" | "select" | "rich_text";
-      f: (d: NaiImgMetaData, b?: NotionDbSchema, prop?: propStr) => propVal;
+      f: (d: Readonly<NaiImgMetaData>, b?: Readonly<NotionDbSchema>, prop?: propStr) => propVal;
     }
   | {
       t: "multi_select";
-      f: (d: NaiImgMetaData, b?: NotionDbSchema, prop?: propStr) => propVal[];
+      f: (d: Readonly<NaiImgMetaData>, b?: Readonly<NotionDbSchema>, prop?: propStr) => propVal[];
     }
 >;

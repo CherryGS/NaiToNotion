@@ -73,3 +73,5 @@ internal 即可，应用名什么的随意，重要的是 key
 - `Sampler` : `select` (单选)
 
 名字或是类型对应不上的都不会进行赋值(个人而言最有用的也就这几个了吧)
+
+[最新的表格请见此,可以直接复制模板](https://ullio.notion.site/35ea132ccd2540f7accf47a1caa65e4a?v=250b63247547457f941b888d7f6ff090&pvs=4)
