@@ -2,6 +2,11 @@
 
 使用 telegra.ph 作为图床将在 novelai.net 中生成的图片依据 metadata 在指定 Notion 数据库中生成特定格式的 Page
 
+## 效果概览
+
+![alt text](img/2.png)
+![alt text](img/3.png)
+
 ## 请注意
 
 - 目前使用 telegra.ph 当作图床，请注意不要滥用并且不要泄露隐私信息
@@ -50,17 +55,19 @@ internal 即可，应用名什么的随意，重要的是 key
 
 在 `https://novelai.net/image` 页面生成图片后，下方会出现一个 **N** 形状的按钮，按它
 
+![alt text](img/4.png)
+
 注意被发送到 Notion 的图片是你屏幕中间显示的，所以可以通过右侧的历史记录发送之前生成的图片
 
 
 ## 数据库格式要求
 
-![schema](img/image.png)
+![schema](img/1.png)
 
 在这个时间(`2024-04-06 02:23:13`),会被自动赋值的有 4 个列名和对应上的列类型
 
 - `Name` : `title` (默认的标题属性) -> 图片的 `signed_hash` 值
-- `Tags` : `multi_select` (多选) -> 图片以 `artist:` 开头或是转成小写时在列表 `nsfw,` 中的 prompt
+- `Tags` : `multi_select` (多选) -> 图片以 `artist:` 开头或是转成小写时在列表 `[nsfw,sfw]` 中的 prompt
 - `Scale` : `number` (数字)
 - `Sampler` : `select` (单选)
 
