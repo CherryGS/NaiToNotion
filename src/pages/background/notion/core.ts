@@ -2,6 +2,8 @@ import { ImgResponse, ImgUploadMsg, MessageType } from "../../message";
 import { ImgPage } from "./func";
 import { NotionPropGenType } from "./typed";
 
+const multi_select_keys = new Set(["nsfw"]);
+
 const default_gen: NotionPropGenType = {
   Name: { t: "title", f: d => d._comment.signed_hash },
   Scale: { t: "number", f: d => d._comment.scale.toString() },
@@ -9,7 +11,7 @@ const default_gen: NotionPropGenType = {
   Tags: {
     t: "multi_select",
     f: d => {
-      return d._comment._prompt.prompt.filter(t => t.startsWith("artist:") || t.toLowerCase() in ["nsfw"]);
+      return d._comment._prompt.prompt.filter(t => t.startsWith("artist:") || multi_select_keys.has(t.toLowerCase()));
     },
   },
 };
