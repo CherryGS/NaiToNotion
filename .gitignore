@@ -20,3 +20,5 @@ public/manifest.json
 *.pem
 *.crx
 local
+
+stats.html
