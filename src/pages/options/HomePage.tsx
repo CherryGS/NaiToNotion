@@ -6,7 +6,11 @@ import icon from "@assets/ico/icon-256.png";
 export const HomePage = () => {
   return (
     <PageContainer>
-      <Image width={256} src={icon} style={{ margin: `0 auto` }} />
+      <div style={{ height: `100%`, width: `100%` }}>
+        <div style={{ textAlign: `center` }}>
+          <Image width={256} src={icon} />
+        </div>
+      </div>
     </PageContainer>
   );
 };

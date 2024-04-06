@@ -87,7 +87,14 @@ const InputAndView = () => {
           </Space>
         </Form.Item>
       </Form>
-      <JsonView value={JSON.parse(code)} style={{ ...darkTheme, background: "none", fontFamily: `LXGW WenKai Mono` }} />
+      <JsonView
+        value={JSON.parse(code)}
+        style={{
+          ...darkTheme,
+          background: "none",
+          fontFamily: `LXGW WenKai Mono`,
+        }}
+      />
     </>
   );
 };

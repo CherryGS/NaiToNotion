@@ -26,8 +26,10 @@
   "dependencies": {
     "@ant-design/icons": "^5.3.6",
     "@ant-design/pro-components": "^2.7.0",
+    "@ant-design/pro-form": "^2.25.1",
     "@ant-design/pro-layout": "^7.19.0",
     "@notionhq/client": "^2.2.14",
+    "@uiw/react-codemirror": "^4.21.25",
     "@uiw/react-json-view": "2.0.0-alpha.23",
     "antd": "^5.16.0",
     "antd-style": "^3.6.2",
