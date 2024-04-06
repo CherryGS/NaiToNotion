@@ -1,3 +1,11 @@
 {
-  "importSorter.generalConfiguration.sortOnBeforeSave": true
+  "importSorter.generalConfiguration.sortOnBeforeSave": true,
+  "javascript.format.enable": true,
+  "typescript.format.enable": true,
+  "prettier.configPath": ".prettierrc",
+  "prettier.requireConfig": true,
+  "prettier.enable": true,
+  "prettier.prettierPath": "./node_modules/prettier",
+  "prettier.printWidth": 120,
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
 }

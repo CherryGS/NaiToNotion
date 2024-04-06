@@ -1,13 +1,16 @@
-import { theme } from "antd";
+import { Button, Result, theme } from "antd";
 import { createStyles, ThemeProvider } from "antd-style";
 import { useEffect } from "react";
 import { createRoot } from "react-dom/client";
+import { createBrowserRouter, createMemoryRouter, RouterProvider } from "react-router-dom";
 import refreshOnUpdate from "virtual:reload-on-update-in-view";
 
 import bg from "@assets/img/bg.jpg";
 
+import { HomePage } from "./HomePage";
+import InputAndView from "./InputInfo";
 // import Options from "@pages/options/Options";
-import { OptionPage } from "./Options";
+import { OptionPage } from "./Option";
 
 refreshOnUpdate("pages/options");
 
@@ -23,12 +26,15 @@ const useStyles = createStyles(({ css }) => ({
     position: fixed;
     filter: blur(5px);
     /* z-index: 0; */
-  `
+  `,
 }));
 
-const Root = () => {
+const Background = () => {
   const { styles } = useStyles();
+  return <div className={styles.bgDiv}></div>;
+};
 
+const Root = () => {
   useEffect(() => {
     const node = document.getElementsByClassName("ant-pro-layout-bg-list")[0];
     node.setAttribute("style", "opacity:0.9");
@@ -40,20 +46,46 @@ const Root = () => {
         token: {
           colorPrimary: "#722ed1",
           colorInfo: "#722ed1",
-          fontSize: 16
+          fontSize: 16,
         },
-        algorithm: theme.darkAlgorithm
-      }}>
-      <div className={styles.bgDiv}></div>
+        algorithm: theme.darkAlgorithm,
+      }}
+    >
       <OptionPage />
     </ThemeProvider>
   );
 };
 
+const router = createMemoryRouter([
+  {
+    path: "/",
+    element: <Root />,
+    errorElement: (
+      <Result
+        status="500"
+        title="500"
+        subTitle="Sorry, something went wrong."
+        extra={<Button type="primary">Back Home</Button>}
+      />
+    ),
+    children: [
+      {
+        path: "/home",
+        element: <HomePage />,
+      },
+      {
+        path: "/input",
+        element: <InputAndView />,
+      },
+    ],
+  },
+]);
+
 const root = document.getElementById("root");
 
 createRoot(root).render(
   <>
-    <Root />
+    <Background />
+    <RouterProvider router={router} />
   </>
 );

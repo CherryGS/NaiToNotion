@@ -7,22 +7,22 @@ export enum StorageType {
    * Persist data locally against browser restarts. Will be deleted by uninstalling the extension.
    * @default
    */
-  Local = 'local',
+  Local = "local",
   /**
    * Uploads data to the users account in the cloud and syncs to the users browsers on other devices. Limits apply.
    */
-  Sync = 'sync',
+  Sync = "sync",
   /**
    * Requires an [enterprise policy](https://www.chromium.org/administrators/configuring-policy-for-extensions) with a
    * json schema for company wide config.
    */
-  Managed = 'managed',
+  Managed = "managed",
   /**
    * Only persist data until the browser is closed. Recommended for service workers which can shutdown anytime and
    * therefore need to restore their state. Set {@link SessionAccessLevel} for permitting content scripts access.
    * @implements Chromes [Session Storage](https://developer.chrome.com/docs/extensions/reference/storage/#property-session)
    */
-  Session = 'session',
+  Session = "session",
 }
 
 /**
@@ -34,11 +34,11 @@ export enum SessionAccessLevel {
    * Storage can only be accessed by Extension pages (not Content scripts).
    * @default
    */
-  ExtensionPagesOnly = 'TRUSTED_CONTEXTS',
+  ExtensionPagesOnly = "TRUSTED_CONTEXTS",
   /**
    * Storage can be accessed by both Extension pages and Content scripts.
    */
-  ExtensionPagesAndContentScripts = 'TRUSTED_AND_UNTRUSTED_CONTEXTS',
+  ExtensionPagesAndContentScripts = "TRUSTED_AND_UNTRUSTED_CONTEXTS",
 }
 
 type ValueOrUpdate<D> = D | ((prev: D) => Promise<D> | D);
@@ -91,7 +91,7 @@ type StorageConfig<D = string> = {
 async function updateCache<D>(valueOrUpdate: ValueOrUpdate<D>, cache: D | null): Promise<D> {
   // Type guard to check if our value or update is a function
   function isFunction<D>(value: ValueOrUpdate<D>): value is (prev: D) => D | Promise<D> {
-    return typeof value === 'function';
+    return typeof value === "function";
   }
 
   // Type guard to check in case of a function, if its a Promise
@@ -116,7 +116,7 @@ async function updateCache<D>(valueOrUpdate: ValueOrUpdate<D>, cache: D | null):
  * If one session storage needs access from content scripts, we need to enable it globally.
  * @default false
  */
-let globalSessionAccessLevelFlag: StorageConfig['sessionAccessForContentScripts'] = false;
+let globalSessionAccessLevelFlag: StorageConfig["sessionAccessForContentScripts"] = false;
 
 /**
  * Checks if the storage permission is granted in the manifest.json.

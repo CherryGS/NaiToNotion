@@ -1,17 +1,23 @@
+import "lxgw-wenkai-webfont/style.css";
+
 // eslint-disable-next-line import/named
 import { Button, Form, FormProps, Input, Space } from "antd";
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { get_db_scheme } from "@pages/background/notion/lib";
+import JsonView from "@uiw/react-json-view";
+import { darkTheme } from "@uiw/react-json-view/dark";
 
-type props = {
-  set_code: CallableFunction;
-};
 type keys = "app_key" | "db_id";
 type mapping = Record<keys, string>;
 
-const InputInfo = ({ set_code }: props) => {
+const InputAndView = () => {
   const [form] = Form.useForm();
+  const [code, _set_code] = useState('{"default": "json"}');
+
+  const set_code = (code: string) => {
+    _set_code(code);
+  };
 
   const onFinish: FormProps["onFinish"] = (v: mapping) => {
     const upd: Partial<ChromeLocalStorage> = {
@@ -43,41 +49,47 @@ const InputInfo = ({ set_code }: props) => {
   }, []);
 
   return (
-    <Form
-      name="basic"
-      form={form}
-      labelCol={{ span: 8 }}
-      wrapperCol={{ span: 16 }}
-      style={{ maxWidth: 600 }}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      autoComplete="off">
-      <Form.Item
-        label="App Key"
-        name="app_key"
-        rules={[{ required: true, message: "Please input your notion app key!" }]}>
-        <Input.Password />
-      </Form.Item>
+    <>
+      <Form
+        name="basic"
+        form={form}
+        labelCol={{ span: 8 }}
+        wrapperCol={{ span: 16 }}
+        style={{ maxWidth: 600 }}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        autoComplete="off"
+      >
+        <Form.Item
+          label="App Key"
+          name="app_key"
+          rules={[{ required: true, message: "Please input your notion app key!" }]}
+        >
+          <Input.Password />
+        </Form.Item>
 
-      <Form.Item
-        label="DB Index"
-        name="db_id"
-        rules={[{ required: true, message: "Please input your notion database index!" }]}>
-        <Input />
-      </Form.Item>
+        <Form.Item
+          label="DB Index"
+          name="db_id"
+          rules={[{ required: true, message: "Please input your notion database index!" }]}
+        >
+          <Input />
+        </Form.Item>
 
-      <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-        <Space>
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
-          <Button htmlType="button" onClick={onReset}>
-            Reset
-          </Button>
-        </Space>
-      </Form.Item>
-    </Form>
+        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+          <Space>
+            <Button type="primary" htmlType="submit">
+              Submit
+            </Button>
+            <Button htmlType="button" onClick={onReset}>
+              Reset
+            </Button>
+          </Space>
+        </Form.Item>
+      </Form>
+      <JsonView value={JSON.parse(code)} style={{ ...darkTheme, background: "none", fontFamily: `LXGW WenKai Mono` }} />
+    </>
   );
 };
 
-export default InputInfo;
+export default InputAndView;

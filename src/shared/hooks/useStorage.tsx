@@ -1,5 +1,5 @@
-import { useSyncExternalStore } from 'react';
-import { BaseStorage } from '@src/shared/storages/base';
+import { useSyncExternalStore } from "react";
+import { BaseStorage } from "@src/shared/storages/base";
 
 type WrappedPromise = ReturnType<typeof wrapPromise>;
 const storageMap: Map<BaseStorage<unknown>, WrappedPromise> = new Map();
@@ -21,26 +21,26 @@ export default function useStorage<
 }
 
 function wrapPromise<R>(promise: Promise<R>) {
-  let status = 'pending';
+  let status = "pending";
   let result: R;
   const suspender = promise.then(
     r => {
-      status = 'success';
+      status = "success";
       result = r;
     },
     e => {
-      status = 'error';
+      status = "error";
       result = e;
-    },
+    }
   );
 
   return {
     read() {
-      if (status === 'pending') {
+      if (status === "pending") {
         throw suspender;
-      } else if (status === 'error') {
+      } else if (status === "error") {
         throw result;
-      } else if (status === 'success') {
+      } else if (status === "success") {
         return result;
       }
     },

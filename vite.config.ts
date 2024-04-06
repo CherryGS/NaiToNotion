@@ -17,8 +17,8 @@ export default defineConfig({
       "@root": rootDir,
       "@src": srcDir,
       "@assets": resolve(srcDir, "assets"),
-      "@pages": pagesDir
-    }
+      "@pages": pagesDir,
+    },
   },
   plugins: [...getPlugins(isDev), react()],
   publicDir: resolve(rootDir, "public"),
@@ -41,7 +41,7 @@ export default defineConfig({
         popup: resolve(pagesDir, "popup", "index.html"),
         newtab: resolve(pagesDir, "newtab", "index.html"),
         options: resolve(pagesDir, "options", "index.html"),
-        sidepanel: resolve(pagesDir, "sidepanel", "index.html")
+        sidepanel: resolve(pagesDir, "sidepanel", "index.html"),
       },
       output: {
         entryFileNames: "src/pages/[name]/index.js",
@@ -50,14 +50,14 @@ export default defineConfig({
           const { name } = path.parse(assetInfo.name);
           const assetFileName = name === "contentStyle" ? `${name}${getCacheInvalidationKey()}` : name;
           return `assets/[ext]/${assetFileName}.chunk.[ext]`;
-        }
-      }
-    }
+        },
+      },
+    },
   },
   test: {
     globals: true,
     environment: "jsdom",
     include: ["**/*.test.ts", "**/*.test.tsx"],
-    setupFiles: "./test-utils/vitest.setup.js"
-  }
+    setupFiles: "./test-utils/vitest.setup.js",
+  },
 });
