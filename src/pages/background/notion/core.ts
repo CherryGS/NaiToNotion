@@ -2,7 +2,7 @@ import { ImgResponse, ImgUploadMsg, MessageType } from "../../message";
 import { ImgPage } from "./func";
 import { NotionPropGenType } from "./typed";
 
-const multi_select_keys = new Set(["nsfw", "sfw"]);
+const multi_select_keys = new Set(["nsfw", "sfw", "photorealistic", "realistic", "year 2023"]);
 
 const default_gen: NotionPropGenType = {
   Name: { t: "title", f: d => d._comment.signed_hash },
